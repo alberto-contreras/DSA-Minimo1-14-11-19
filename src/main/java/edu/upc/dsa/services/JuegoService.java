@@ -28,11 +28,13 @@ public class JuegoService {
         this.tm.addUser("1", "Alberto", "Contreras");
         this.tm.addUser("2", "Chema", "Alonso");
         this.tm.addUser("3", "Steve", "Jobs");
+        this.tm.addObject("1","1","Espada");
+        this.tm.addObject("1","2","Escudo");
           }
     }
 
 
-    @GET //OKEY
+    @GET //OKEY Obten todos users sistemas
     @ApiOperation(value = "Obtener usuarios del sistema ordenados alfabeticamente", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer = "List"),
@@ -49,7 +51,7 @@ public class JuegoService {
 
     }
 
-    @GET //OKEY
+    @GET //OKEY Obtiene datos User
     @ApiOperation(value = "Obtener User", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
@@ -63,7 +65,7 @@ public class JuegoService {
         else  return Response.status(201).entity(t).build();
     }
 
-    @POST  //OKEY
+    @POST  //OKEY Crea nuevo User
     @ApiOperation(value = "Create a new User", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response=User.class),
@@ -73,27 +75,29 @@ public class JuegoService {
 
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newTrack(User u) {
+    public Response newUser(User u) {
 
         if (u.getNombre()==null || u.getIdUser()==null || u.getApellido() == null)  return Response.status(500).entity(u).build();
         this.tm.addUser(u.getIdUser(),u.getNombre(),u.getApellido());
         return Response.status(201).entity(u).build();
     }
-    @PUT
+    @PUT //OKEY Modifica un user
     @ApiOperation(value = "Update a User (WARNING don't modifie the id)", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 404, message = "Track not found")
     })
     @Path("/")
-    public Response updateUser(User u) {
+    public Response updateUser(@QueryParam("idUse")  String idUse ,User u) {
 
-        User t = this.tm.modifUser(u.getIdUser(),u.getNombre(),u.getApellido());
+        User t = this.tm.modifUser(idUse,u.getNombre(),u.getApellido());
 
         if (t == null) return Response.status(404).build();
 
         return Response.status(201).build();
     }
+
+
 
 
 

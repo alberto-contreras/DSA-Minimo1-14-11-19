@@ -26,91 +26,45 @@ public class ObjService {
        if(this.tm.usersOrdAlf().size()==0){   //PARA NO TENER PROBLEMAS SI HAY SINGLETONE
         this.tm.addUser("1", "Alberto", "Contreras");
         this.tm.addObject("1","1","Espada");
+        this.tm.addObject("1","2","Escudo");
         this.tm.addUser("2", "Chema", "Alonso");
         this.tm.addUser("3", "Steve", "Jobs");
           }
     }
 
-    @GET //OKEY
-    @ApiOperation(value = "Obtener Objetos de un user", notes = "asdasd")
+    @GET //OKEY Lista Objetos Usuario
+    @ApiOperation(value = "Obtener objetos de un usuario", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Obj.class),
-            @ApiResponse(code = 404, message = "User not found")
+            @ApiResponse(code = 201, message = "Successful", response = Obj.class, responseContainer = "List"),
     })
-    @Path("/{idObj}/")
+    @Path("/{idUser}/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("idObj") String id) {
-        List<Obj> objetos = this.tm.consObj(id);
-        if (objetos == null) return Response.status(404).build();
-        else  return Response.status(201).entity(objetos).build();
+    public Response getObjbyID(@PathParam("idUser") String id1) {
+
+        List<Obj> objetos = this.tm.consObj(id1);
+
+        GenericEntity<List<Obj>> entity1 = new GenericEntity<List<Obj>>(objetos) {
+        };
+        return Response.status(201).entity(entity1).build();
+
     }
 
-//    @POST  //OKEY
-//    @ApiOperation(value = "Create a new User", notes = "asdasd")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Successful", response=User.class),
-//            @ApiResponse(code = 500, message = "Validation Error")
-//
-//    })
-//
-//    @Path("/")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response newTrack(User u) {
-//
-//        if (u.getNombre()==null || u.getIdUser()==null || u.getApellido() == null)  return Response.status(500).entity(u).build();
-//        this.tm.addUser(u.getIdUser(),u.getNombre(),u.getApellido());
-//        return Response.status(201).entity(u).build();
-//    }
+    @POST //OKEY Añadir nuevo Objeto a un usuario
+    @ApiOperation(value = "Create a new Object and add to user", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response=Obj.class),
+            @ApiResponse(code = 500, message = "Validation Error")
 
+    })
 
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response newObj( @QueryParam("idUsuario")  String idUsuario ,Obj c) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @GET
-//    @ApiOperation(value = "Obtener Objetos User", notes = "asdasd")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Successful", response = Obj.class),
-//            @ApiResponse(code = 404, message = "User not found")
-//    })
-//    @Path("/{idObj}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getObj(@PathParam("idObj") String id) {
-//        List<Obj> objetos = this.tm.consObj(id);
-//
-//        GenericEntity<List<Obj>> entity1 = new GenericEntity<List<Obj>>(objetos) {
-//        };
-//        return Response.status(201).entity(entity1).build();
-//
-//    }
-//    @POST
-//    @ApiOperation(value = "Insertar un nuevo Objeto", notes = "asdasd")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Successful", response=Obj.class),
-//            @ApiResponse(code = 500, message = "Validation Error")
-//
-//    })
-//    @Path("/")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response newObj(Obj obj,String id1) {
-//        this.tm.addObject(id1,obj.getIdObj(),obj.getTipo());
-//        return Response.status(201).entity(obj).build();
-//    }
-
-
+        if (idUsuario==null || c.getIdObj()==null || c.getTipo() == null)  return Response.status(500).entity(c).build();
+        this.tm.addObject(idUsuario,c.getIdObj(),c.getTipo());
+        return Response.status(201).entity(c).build();
+    }
 
 
 
