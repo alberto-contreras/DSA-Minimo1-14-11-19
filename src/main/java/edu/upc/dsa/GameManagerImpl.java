@@ -34,21 +34,24 @@ public class GameManagerImpl implements GameManager {
 
     }
 
-    public void modifUser(String idUser, String newName, String newApellido) {
+    public User modifUser(String idUser, String newName, String newApellido) {
         log.info("Estos son los parametros que modificaremos del user:" + idUser + "/" + newName + "/" + newApellido);
         User aux = users.get(idUser);
         aux.setNombre(newName);
         aux.setApellido(newApellido);
         users.put(idUser, aux);
         log.info("Modificaciones hechas correctamente:" + users.get(idUser).getNombre());
+        return aux;
 
     }
 
     public int numUsers() {
+        log.info("Num Users:" + users.size());
         return users.size();
     }
 
     public User consUser(String idUser) {
+        log.info("Has consultado el Users:" + idUser);
         return users.get(idUser);
     }
 
@@ -63,6 +66,7 @@ public class GameManagerImpl implements GameManager {
     }
 
     public List<Obj> consObj(String idUser) {
+        log.info("Consultas los Obj del users:" + idUser);
         User u = users.get(idUser);
         return u.getMisObj();
     }
@@ -74,9 +78,9 @@ public class GameManagerImpl implements GameManager {
     }
 
 
-    public List<User> usersOrdAlf() throws EmptyUserList {
+    public List<User> usersOrdAlf()  {
         List<User> clon = new ArrayList<>(users.values());
-        if(clon.size()==0) throw new EmptyUserList();
+        if(clon.size()==0) {log.error("No hay users en el sistema ");}
         else {
             Collections.sort(clon, new Comparator<User>() {
                 public int compare(User s1, User s2) {

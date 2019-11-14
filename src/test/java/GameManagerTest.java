@@ -16,18 +16,13 @@ public class GameManagerTest {
     @Before
     public void setUp() {
         this.gestor = GameManagerImpl.getInstance();
-
-
-
-
     }
     @After
     public void tearDown(){
         gestor.liberar();
-
     }
     @Test
-    public void verifUser() throws EmptyUserList {
+    public void verifUser(){
         gestor.addUser("1","Alberto","Contreras");
         gestor.modifUser("1","Alb","Con");
         Assert.assertEquals("Num users en el sistema",1, gestor.numUsers());
